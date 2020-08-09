@@ -6,3 +6,8 @@ commander@^6.0.0:
   version "6.0.0"
   resolved "https://r.cnpmjs.org/commander/download/commander-6.0.0.tgz#2b270da94f8fb9014455312f829a1129dbf8887e"
   integrity sha1-KycNqU+PuQFEVTEvgpoRKdv4iH4=
+
+node.js@^0.0.1-security:
+  version "0.0.1-security"
+  resolved "https://r.cnpmjs.org/node.js/download/node.js-0.0.1-security.tgz#ad5a038f1c70dc7a5f95c8df524cee98534d62a6"
+  integrity sha1-rVoDjxxw3HpflcjfUkzumFNNYqY=
