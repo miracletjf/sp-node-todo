@@ -1,4 +1,8 @@
 const { program } = require('commander');
+const fs = require('fs')
+const path = require('path')
+const homeDir = process.env.HOME || require('os').homedir()
+const dbPath = path.join(homeDir, '.todo')
 
 // program
 //   .option('-d, --debug', 'output extra debugging')
@@ -19,6 +23,13 @@ program
     const task = args.join(' ')
     console.log('add a task');
     console.log(task)
+
+    fs.readFile(dbPath, { flag: 'a+' }, (err, data) => {
+      if (err) throw err;
+      const todoStr = data.toString() || '[]'
+      const todoList = JSON.parse(todoStr)
+      console.log(todoList)
+    });
   });
 
 // 清除 todo
