@@ -29,6 +29,14 @@ program
       const todoStr = data.toString() || '[]'
       const todoList = JSON.parse(todoStr)
       console.log(todoList)
+      todoList.push({
+        title: task,
+        isFinish: false
+      })
+      fs.writeFile(dbPath, JSON.stringify(todoList), err => {
+        if (err) throw err;
+        console.log('success')
+      })
     });
   });
 
@@ -37,7 +45,14 @@ program
   .command('clear')
   .description('clear todo list')
   .action(() => {
-    console.log('clear todo list');
+    fs.writeFile(dbPath, '[]', err => {
+      if (err) throw err;
+      console.log('success')
+      fs.readFile(dbPath, (error, data) => {
+        if (error) throw error;
+        console.log(data.toString())
+      })
+    })
   });
 
 program.parse(process.argv);
