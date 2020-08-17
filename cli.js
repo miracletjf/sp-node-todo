@@ -11,7 +11,7 @@ program
     try {
       const todoList = await db.read()
       todoList.push({title: task, isFinish: false})
-      await db.write(JSON.stringify(todoList))
+      await db.write(todoList)
       console.log('操作成功！')
     } catch (e) {
       console.log('操作失败！')
@@ -24,7 +24,7 @@ program
   .description('clear todo list')
   .action(async () => {
     try {
-      await db.write('[]')
+      await db.write([])
       console.log('操作成功！')
     } catch (e) {
       console.log('操作失败！')
@@ -92,7 +92,7 @@ function executeCreate (todoList) {
       const title = answers.title.toString().trim()
       if (title) {
         todoList.push({title: answers.title, isFinish: false})
-        db.write(JSON.stringify(todoList))
+        db.write(todoList)
       }
     });
 }
@@ -122,11 +122,11 @@ function ackQuestionFormItemOperate (todoList, index) {
 
 function markAsDone(todoList, index) {
   todoList[index].isFinish = true
-  db.write(JSON.stringify(todoList))
+  db.write(todoList)
 }
 function markAsUndone(todoList, index) {
   todoList[index].isFinish = false
-  db.write(JSON.stringify(todoList))
+  db.write(todoList)
 }
 function updateTitle(todoList, index) {
   inquirer
@@ -141,13 +141,13 @@ function updateTitle(todoList, index) {
       const title = answers.title.toString().trim()
       if (title) {
         todoList[index].title = title
-        db.write(JSON.stringify(todoList))
+        db.write(todoList)
       }
     });
 }
 function remove(todoList, index) {
   todoList.splice(index, 1)
-  db.write(JSON.stringify(todoList))
+  db.write(todoList)
 }
 
 program.parse(process.argv);

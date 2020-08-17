@@ -12,9 +12,12 @@ function read () {
   })
 
 }
-function write (text) {
+function write (list) {
   return new Promise((resolve, reject) => {
-    fs.writeFile(dbPath, text, err => {
+    if (!list instanceof Array) {
+      return reject(new Error('数据写入类型有误，请检查后再试！'))
+    }
+    fs.writeFile(dbPath, JSON.stringify(list), err => {
       if (err) return reject(err);
       return resolve()
     })
