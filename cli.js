@@ -38,34 +38,63 @@ program
     db.read().then(todoList => {
       console.log('show all')
       console.log(todoList)
-      inquirer
-        .prompt([
-          {
-            type: 'list',
-            name: 'index',
-            message: 'What do you want to do?',
-            choices: [
-              {
-                name: '退出',
-                value: -1
-              },
-              ...todoList.map((item, index) => ({
-                name: `[${item.isFinish ? 'X':'_'}] ${index + 1} ${item.title}`,
-                value: index
-              })),
-              {
-                name: '+ 创建任务',
-                value: -2
-              }
-            ],
-          }
-        ])
-        .then((answers) => {
-          console.log(answers)
-        });
+      askQuestionForListOperate(todoList)
     }).catch(() => {
       console.log('操作失败！')
     })
   });
+
+function askQuestionForListOperate (todoList) {
+  inquirer
+    .prompt([
+      {
+        type: 'list',
+        name: 'key',
+        message: '你想要执行的操作是？',
+        choices: [
+          {
+            name: '退出',
+            value: -1
+          },
+          ...todoList.map((item, index) => ({
+            name: `[${item.isFinish ? 'X':'_'}] ${index + 1} ${item.title}`,
+            value: index
+          })),
+          {
+            name: '+ 创建任务',
+            value: -2
+          }
+        ],
+      }
+    ])
+    .then((answers) => {
+      const key = answers.key
+      if (key === -1) {
+        return false
+      }
+      if (key === -2) {
+        executeCreate(todoList)
+      }
+    });
+}
+
+function executeCreate (todoList) {
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        name: 'title',
+        message: 'How many do you need?'
+      }
+    ])
+    .then((answers) => {
+      if (answers.title.toString().trim()) {
+        todoList.push({title: answers.title, isFinish: false})
+        db.write(JSON.stringify(todoList))
+      }
+    });
+}
+
+
 
 program.parse(process.argv);
