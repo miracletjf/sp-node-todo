@@ -1,16 +1,6 @@
 const { program } = require('commander');
+const inquirer = require('inquirer')
 const db = require('./db')
-
-// program
-//   .option('-d, --debug', 'output extra debugging')
-//   .option('-s, --small', 'small pizza size')
-//   .option('-p, --pizza-type <type>', 'flavour of pizza');
-//
-//
-// if (program.debug) console.log(program.opts());
-// console.log('pizza details:');
-// if (program.small) console.log('- small pizza size');
-// if (program.pizzaType) console.log(`- ${program.pizzaType}`);
 
 // 新增 todo
 program
@@ -42,24 +32,37 @@ program
   });
 
 program
-  .command('clear')
-  .description('clear todo list')
-  .action(async () => {
-    try {
-      await db.write('[]')
-      console.log('操作成功！')
-    } catch (e) {
-      console.log('操作失败！')
-    }
-  });
-
-program
   .command('ls')
   .description('show all list')
   .action(async () => {
     db.read().then(todoList => {
       console.log('show all')
       console.log(todoList)
+      inquirer
+        .prompt([
+          {
+            type: 'list',
+            name: 'index',
+            message: 'What do you want to do?',
+            choices: [
+              {
+                name: '退出',
+                value: -1
+              },
+              ...todoList.map((item, index) => ({
+                name: `[${item.isFinish ? 'X':'_'}] ${index + 1} ${item.title}`,
+                value: index
+              })),
+              {
+                name: '+ 创建任务',
+                value: -2
+              }
+            ],
+          }
+        ])
+        .then((answers) => {
+          console.log(answers)
+        });
     }).catch(() => {
       console.log('操作失败！')
     })
