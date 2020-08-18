@@ -1,7 +1,13 @@
 {
   "name": "sp-node-todo",
   "version": "0.0.1",
-  "main": "cli.js",
+  "main": "index.js",
+  "bin": {
+    "todo": "cli.js"
+  },
+  "files": [
+    "*.js"
+  ],
   "license": "MIT",
   "dependencies": {
     "commander": "^6.0.0",
