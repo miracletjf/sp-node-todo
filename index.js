@@ -89,9 +89,13 @@ function askForAction (todoList, index) {
       }
     ])
     .then(async (answers) => {
-      const action = actions[answers.action]
-      await action && action(todoList, index)
-      printTaskList(todoList)
+      try {
+        const action = actions[answers.action]
+        const writeFile = await action && action(todoList, index)
+        await writeFile
+      } catch {} finally {
+        printTaskList(todoList)
+      }
     });
 }
 
@@ -103,8 +107,8 @@ function markAsUndone(todoList, index) {
   todoList[index].isFinish = false
   return db.write(todoList)
 }
-async function updateTitle(todoList, index) {
-  await inquirer
+function updateTitle(todoList, index) {
+  return inquirer
     .prompt([
       {
         type: 'input',
@@ -112,11 +116,11 @@ async function updateTitle(todoList, index) {
         message: '请输入新任务名'
       }
     ])
-    .then(async (answers) => {
+    .then((answers) => {
       const title = answers.title.toString().trim()
       if (title) {
         todoList[index].title = title
-        await db.write(todoList)
+        return db.write(todoList)
       }
     });
 }
