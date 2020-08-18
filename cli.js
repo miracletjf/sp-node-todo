@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 const { program } = require('commander');
 const api = require('./index')
+const pkg = require('./package')
 
+// 版本
+program.version(pkg.version);
 // 新增 todo
 program
   .command('add')
