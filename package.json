@@ -8,10 +8,16 @@
   "files": [
     "*.js"
   ],
+  "scripts": {
+    "test": "jest"
+  },
   "license": "MIT",
   "dependencies": {
     "commander": "^6.0.0",
     "inquirer": "^7.3.3",
     "node.js": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "jest": "^26.4.2"
   }
 }
